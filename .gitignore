@@ -46,6 +46,10 @@ HELP.md
 .gradle/
 build/
 .gitattributes
+target/
+.git/
+*.md
 
 # Docker volumes
 docker/postgres-data/
+docker/

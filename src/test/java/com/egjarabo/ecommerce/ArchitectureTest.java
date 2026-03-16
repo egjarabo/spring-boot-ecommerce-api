@@ -35,6 +35,14 @@ public class ArchitectureTest {
                     .should().dependOnClassesThat()
                     .areAnnotatedWith(jakarta.persistence.Entity.class);
 
+    // Repositories must only be accessed from Services
+    @ArchTest
+    static final ArchRule repositories_should_only_be_used_by_services =
+            classes()
+                    .that().haveSimpleNameEndingWith("Repository")
+                    .should().onlyBeAccessed().byClassesThat()
+                    .haveSimpleNameEndingWith("Service");
+
     // Classes named Controller must be annotated with @RestController
     @ArchTest
     static final ArchRule controllers_must_be_annotated =

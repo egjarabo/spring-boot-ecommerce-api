@@ -77,4 +77,88 @@ class ProductControllerTest extends AbstractIntegrationTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
+
+    @Test
+    void shouldReturnProductsByCategory() {
+        // Create two products in same category and one in different
+        restTemplate.postForEntity(baseUrl() + "/api/v1/products",
+                new ProductRequest("Laptop", "desc", new BigDecimal("1200.00"), "Electronics", 10),
+                ProductResponse.class);
+        restTemplate.postForEntity(baseUrl() + "/api/v1/products",
+                new ProductRequest("Phone", "desc", new BigDecimal("800.00"), "Electronics", 5),
+                ProductResponse.class);
+        restTemplate.postForEntity(baseUrl() + "/api/v1/products",
+                new ProductRequest("Desk", "desc", new BigDecimal("300.00"), "Furniture", 3),
+                ProductResponse.class);
+
+        var response = restTemplate.getForEntity(
+                baseUrl() + "/api/v1/products/category/Electronics",
+                ProductResponse[].class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(2, response.getBody().length);
+    }
+
+    @Test
+    void shouldUpdateProductSuccessfully() {
+        // First create a product
+        var created = restTemplate.postForEntity(
+                baseUrl() + "/api/v1/products",
+                new ProductRequest("Old Name", "Old desc", new BigDecimal("100.00"), "Electronics", 5),
+                ProductResponse.class).getBody();
+
+        // Then update it
+        var updateRequest = new ProductRequest("New Name", "New desc",
+                new BigDecimal("200.00"), "Electronics", 10);
+
+        var response = restTemplate.exchange(
+                baseUrl() + "/api/v1/products/" + created.id(),
+                org.springframework.http.HttpMethod.PUT,
+                new org.springframework.http.HttpEntity<>(updateRequest),
+                ProductResponse.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("New Name", response.getBody().name());
+        assertEquals(new BigDecimal("200.00"), response.getBody().price());
+    }
+
+    @Test
+    void shouldReturn404WhenUpdatingNonExistingProduct() {
+        var updateRequest = new ProductRequest("Name", "desc",
+                new BigDecimal("100.00"), "Electronics", 5);
+
+        var response = restTemplate.exchange(
+                baseUrl() + "/api/v1/products/non-existing-id",
+                org.springframework.http.HttpMethod.PUT,
+                new org.springframework.http.HttpEntity<>(updateRequest),
+                String.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void shouldDeleteProductSuccessfully() {
+        var created = restTemplate.postForEntity(
+                baseUrl() + "/api/v1/products",
+                new ProductRequest("To Delete", "desc", new BigDecimal("50.00"), "Electronics", 1),
+                ProductResponse.class).getBody();
+
+        restTemplate.delete(baseUrl() + "/api/v1/products/" + created.id());
+
+        // Verify it's gone
+        var response = restTemplate.getForEntity(
+                baseUrl() + "/api/v1/products/" + created.id(), String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void shouldReturn404WhenDeletingNonExistingProduct() {
+        var response = restTemplate.exchange(
+                baseUrl() + "/api/v1/products/non-existing-id",
+                org.springframework.http.HttpMethod.DELETE,
+                null,
+                String.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
 }

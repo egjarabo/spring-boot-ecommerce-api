@@ -1,4 +1,5 @@
 # Spring Boot E-commerce API
+[![CI Pipeline](https://github.com/egjarabo/spring-boot-ecommerce-api/actions/workflows/ci.yml/badge.svg)](https://github.com/egjarabo/spring-boot-ecommerce-api/actions/workflows/ci.yml)
 
 REST API for an e-commerce platform built with Spring Boot 3, Java 21,
 JPA and PostgreSQL. Demonstrates modern Java and Spring practices including
@@ -104,4 +105,3 @@ GET http://localhost:8080/actuator/health
   purchase time, preserving historical accuracy
 - **Testcontainers** — integration tests run against a real PostgreSQL
   instance, not mocks
-```

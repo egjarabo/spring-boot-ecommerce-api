@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Java 21
         uses: actions/setup-java@v4
@@ -30,5 +32,5 @@ jobs:
 
       - name: SonarCloud analysis
         env:
-          SONAR_TOKEN: a528a5ac81a1d42204a3b60952c9a2d18585e9f0
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn sonar:sonar -B

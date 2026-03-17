@@ -1,6 +1,7 @@
 # Spring Boot E-commerce API
 [![CI Pipeline](https://github.com/egjarabo/spring-boot-ecommerce-api/actions/workflows/ci.yml/badge.svg)](https://github.com/egjarabo/spring-boot-ecommerce-api/actions/workflows/ci.yml)
 [![Coverage](https://img.shields.io/badge/coverage-89%25-brightgreen)](target/site/jacoco/index.html)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=egjarabo_spring-boot-ecommerce-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=egjarabo_spring-boot-ecommerce-api)
 
 REST API for an e-commerce platform built with Spring Boot 3, Java 21,
 JPA and PostgreSQL. Demonstrates modern Java and Spring practices including

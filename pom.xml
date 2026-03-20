@@ -72,6 +72,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Liquibase — database migration versioning -->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+
 		<!-- Testcontainers -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -7,6 +7,9 @@ services:
       POSTGRES_USER: ecommerce
       POSTGRES_PASSWORD: ecommerce
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - ./docker/postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
